@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Health Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .result-icon {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 45px;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .low  { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .high { background: linear-gradient(135deg, #f5576c, #f093fb); }
+
+        h1 { color: #fff; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+
+        .result-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        .badge-low  { background: rgba(56,239,125,0.2); color: #38ef7d; border: 1px solid #38ef7d; }
+        .badge-high { background: rgba(245,87,108,0.2); color: #f5576c; border: 1px solid #f5576c; }
+
+        .message {
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .confidence-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .confidence-label {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .confidence-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            border-radius: 50px;
+            animation: fillBar 1s ease;
+        }
+
+        @keyframes fillBar {
+            from { width: 0%; }
+        }
+
+        .fill-low  { background: linear-gradient(90deg, #11998e, #38ef7d); }
+        .fill-high { background: linear-gradient(90deg, #f5576c, #f093fb); }
+
+        .confidence-pct {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .stat-unit {
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245,87,108,0.4);
+        }
+
+        .disclaimer {
+            color: rgba(255,255,255,0.25);
+            font-size: 11px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="result-icon {{ risk_level }}">
+        {% if risk_level == 'low' %}✅{% else %}⚠️{% endif %}
+    </div>
+
+    <h1>{{ result }}</h1>
+
+    <div class="result-badge badge-{{ risk_level }}">
+        {% if risk_level == 'low' %}HEALTHY{% else %}AT RISK{% endif %}
+    </div>
+
+    <p class="message">{{ message }}</p>
+
+    <div class="confidence-box">
+        <p class="confidence-label">AI CONFIDENCE SCORE</p>
+        <div class="confidence-bar">
+            <div class="confidence-fill fill-{{ risk_level }}"
+                 style="width: {{ percentage }}%"></div>
+        </div>
+        <p class="confidence-pct">{{ percentage }}%</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <p class="stat-label">AGE</p>
+            <p class="stat-value">{{ age }} <span class="stat-unit">yrs</span></p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-label">BLOOD PRESSURE</p>
+            <p class="stat-value">{{ bp }} <span class="stat-unit">mmHg</span></p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-label">CHOLESTEROL</p>
+            <p class="stat-value">{{ chol }} <span class="stat-unit">mg/dl</span></p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-label">HEART RATE</p>
+            <p class="stat-value">{{ hr }} <span class="stat-unit">BPM</span></p>
+        </div>
+    </div>
+
+    <a href="/" class="btn">← Check Again</a>
+
+    <p class="disclaimer">⚠️ This AI tool is for educational purposes only.<br>
+    Always consult a qualified medical professional.</p>
+
+</div>
+</body>
+</html>

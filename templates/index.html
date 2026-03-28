@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Risk Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+
+        .pulse-icon {
+            width: 70px; height: 70px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 87, 108, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(245, 87, 108, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 87, 108, 0); }
+        }
+
+        h1 { color: #fff; font-size: 26px; font-weight: 700; }
+        .subtitle { color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 8px; }
+
+        .form-group { margin-bottom: 22px; }
+
+        label {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            font-size: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px 14px 46px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #f5576c;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 3px rgba(245,87,108,0.2);
+        }
+
+        input::placeholder { color: rgba(255,255,255,0.3); }
+
+        .range-hint {
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245,87,108,0.4);
+        }
+
+        .btn:active { transform: translateY(0); }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            margin-top: 24px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin: 30px 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .info-badge {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+        }
+
+        .info-badge span {
+            display: block;
+            color: #f5576c;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="pulse-icon">❤️</div>
+        <h1>AI Health Risk Detection</h1>
+        <p class="subtitle">Enter your health details to get instant AI-powered risk analysis</p>
+    </div>
+
+    <div class="info-row">
+        <div class="info-badge"><span>🎯</span>98.54% Accurate</div>
+        <div class="info-badge"><span>⚡</span>Instant Result</div>
+        <div class="info-badge"><span>🔒</span>100% Private</div>
+    </div>
+
+    <hr class="divider">
+
+    <form action="/predict" method="POST">
+        <div class="form-group">
+            <label>AGE</label>
+            <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="number" name="age" placeholder="Enter your age" min="1" max="120" required>
+            </div>
+            <p class="range-hint">Normal range: 1 - 120 years</p>
+        </div>
+
+        <div class="form-group">
+            <label>RESTING BLOOD PRESSURE (mmHg)</label>
+            <div class="input-wrapper">
+                <span class="input-icon">🩺</span>
+                <input type="number" name="blood_pressure" placeholder="e.g. 120" min="80" max="200" required>
+            </div>
+            <p class="range-hint">Normal range: 90 - 120 mmHg</p>
+        </div>
+
+        <div class="form-group">
+            <label>CHOLESTEROL (mg/dl)</label>
+            <div class="input-wrapper">
+                <span class="input-icon">💉</span>
+                <input type="number" name="cholesterol" placeholder="e.g. 200" min="100" max="600" required>
+            </div>
+            <p class="range-hint">Normal range: below 200 mg/dl</p>
+        </div>
+
+        <div class="form-group">
+            <label>MAX HEART RATE (BPM)</label>
+            <div class="input-wrapper">
+                <span class="input-icon">💓</span>
+                <input type="number" name="heart_rate" placeholder="e.g. 75" min="40" max="220" required>
+            </div>
+            <p class="range-hint">Normal range: 60 - 100 BPM</p>
+        </div>
+
+        <button type="submit" class="btn">Analyze My Health Risk →</button>
+    </form>
+
+    <p class="footer-note">⚠️ This tool is for educational purposes only. Always consult a doctor.</p>
+</div>
+</body>
+</html>
